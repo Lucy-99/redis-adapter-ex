@@ -1,0 +1,4 @@
+{
+  "ignore": ["./public/js/*.js"],
+  "exec": "node src/server.js"
+}
