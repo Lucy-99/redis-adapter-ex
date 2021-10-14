@@ -10,5 +10,15 @@ socket.on("connect", () => {
 mainForm.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log(formInput.value);
+  console.log(mainForm.target);
   socket.emit("join", { room: formInput.value });
+  if (mainForm.target === "chat") {
+    handleChat(formInput.value);
+  }
 });
+
+function handleChat(room) {
+  console.log("going to room", room);
+  const sock = io("/chat");
+  sock.emit("join", { room });
+}

@@ -20,18 +20,35 @@ server.listen(3030, () => {
   console.log("http://localhost:3030");
 });
 
-io.on("connection", async (socket) => {
+setInterval(async () => {
   const loggedInSockets = await io.of("/").adapter.sockets(new Set());
   console.log("online:", loggedInSockets);
-  socket.on("disconnect", async() => {
-    console.log("disconnected:", socket.id);
-    const loggedInSockets = await io.of("/").adapter.sockets(new Set());
-    console.log("online:", loggedInSockets);
-  });
+}, 1000);
+
+io.on("connection", async (socket) => {
+  console.log(socket.id);
+  // const loggedInSockets = await io.of("/").adapter.sockets(new Set());
+  // console.log("online:", loggedInSockets);
+  // socket.on("disconnect", async () => {
+  //   console.log("disconnected:", socket.id);
+  //   const loggedInSockets = await io.of("/").adapter.sockets(new Set());
+  //   console.log("online:", loggedInSockets);
+  // });
+  // socket.on("join", async ({ room }) => {
+  //   console.log(`joining ${socket.id}=>${room}`);
+  //   await io.of("/").adapter.remoteJoin(socket.id, room);
+  //   const socketInRoom = await io.in(room).allSockets();
+  //   console.log(`sockets in ${room}`, socketInRoom);
+  // });
+});
+
+const chat = io.of("/chat");
+chat.on("connection", (socket) => {
+  console.log("->chat", socket.id);
   socket.on("join", async ({ room }) => {
     console.log(`joining ${socket.id}=>${room}`);
-    await io.of("/").adapter.remoteJoin(socket.id, room);
-    const socketInRoom = await io.in(room).allSockets();
+    await io.of("/chat").adapter.remoteJoin(socket.id, room);
+    const socketInRoom = await io.of("/chat").in(room).allSockets();
     console.log(`sockets in ${room}`, socketInRoom);
   });
 });

@@ -11,7 +11,9 @@ html(lang="en")
     main
       form#main-form
         input(type="text")
-        button(type="submit") join
+        button(type="submit" name="chat" onclick='this.form.target="chat";') join chat 
+        button(type="submit" name="voice" onclick='this.form.target="voice";') join voice
+        
     script(src="public/js/index.js") 
 
   
